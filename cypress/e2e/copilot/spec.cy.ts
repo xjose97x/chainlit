@@ -215,4 +215,23 @@ describe('Copilot', () => {
     );
     cy.get('#chainlit-copilot-chat', opts).should('exist');
   });
+
+  it('should preserve commands upon remount', () => {
+    mountWidget();
+    cy.step('Open copilot');
+    cy.get('#chainlit-copilot-button', opts).click();
+    cy.get('#command-button', opts).should('exist');
+
+    cy.step('Unmount the widget');
+    cy.window().then((win) => {
+      // @ts-expect-error is not a valid prop
+      win.unmountChainlitWidget();
+    });
+    cy.get('#chainlit-copilot-chat').should('not.exist');
+
+    cy.step('Remount the widget');
+    mountWidget();
+    cy.get('#chainlit-copilot-button', opts).click();
+    cy.get('#command-button', opts).should('exist');
+  });
 });

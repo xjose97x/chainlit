@@ -1,8 +1,19 @@
 import chainlit as cl
 
+commands = [
+    {"id": "Picture", "icon": "image", "description": "Use DALL-E"},
+    {"id": "Search", "icon": "globe", "description": "Find on the web"},
+    {
+        "id": "Canvas",
+        "icon": "pen-line",
+        "description": "Collaborate on writing and code",
+    },
+]
+
 
 @cl.on_chat_start
 async def on_chat_start():
+    await cl.context.emitter.set_commands(commands)
     await cl.Message(content="Hi from copilot!").send()
 
 
